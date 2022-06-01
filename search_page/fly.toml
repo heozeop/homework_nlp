@@ -1,16 +1,22 @@
-# fly.toml file generated for simple-movie on 2022-05-29T20:02:45+09:00
+# fly.toml file generated for movie-that on 2022-06-01T11:52:51+09:00
 
-app = "simple-movie"
+app = "movie-that"
 
 kill_signal = "SIGINT"
 kill_timeout = 5
 processes = []
 
 [env]
+  DATABASE_URL = "file:/data/sqlite.db"
+  PORT = "8080"
 
 [experimental]
-  allowed_public_ports = []
-  auto_rollback = true
+  cmd = "start_with_migrations.sh"
+  entrypoint = "sh"
+
+[[mounts]]
+  destination = "/data"
+  source = "data"
 
 [[services]]
   http_checks = []
