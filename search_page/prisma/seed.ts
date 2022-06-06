@@ -6,13 +6,17 @@ const db = new PrismaClient();
 
 const genres = ['Action', 'Adventure', 'Animation', 'Comedy', 'Crime', 'Drama', 'Family', 'Fantasy', 'Film-Noir', 'Horror', 'Musical', 'Mystery', 'Romance', 'Sci-Fi', 'Short', 'Thriller', 'War', 'Western']
 const imgSrouce = "https://www.imsdb.com"
-
 async function seed() {
+
   const genreList = await Promise.all(
     genres.map(genre => db.genre.create({ data: { name: genre }}))
   )
 
-  const movieInfo = getMovieData().map(movie => ({...movie, title: movie.title.replace(', The', '')}))
+  const movieInfo = getMovieData().map(movie => ({
+    ...movie,
+    title: movie.title.replace(', The', ''),
+    imgSrc: movie.imgSrc?.startsWith('http') ? movie.imgSrc : imgSrouce + movie.imgSrc,
+  }))
   // author
   const uniqAuthors = [...new Set(movieInfo.flatMap(
       movie => movie.authors
@@ -26,7 +30,7 @@ async function seed() {
     movieInfo.map(movieInfo => db.movie.create({
       data: {
         title: movieInfo['title'],
-        poster: imgSrouce + movieInfo['imgSrc'] || '',
+        poster: movieInfo['imgSrc'] || '',
     }}))
   )
 
