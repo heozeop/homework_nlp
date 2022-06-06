@@ -5,25 +5,25 @@ import {
   Link,
   useCatch,
 } from "@remix-run/react";
-import type { Joke } from "@prisma/client";
+import type { Movie } from "@prisma/client";
 
 import { db } from "~/utils/db.server";
 
-type LoaderData = { randomJoke: Joke };
+type LoaderData = { randomMovie: Movie};
 
 export const loader: LoaderFunction = async () => {
-  const count = await db.joke.count();
+  const count = await db.movie.count();
   const randomRowNumber = Math.floor(Math.random() * count);
-  const [randomJoke] = await db.joke.findMany({
+  const [randomMovie] = await db.movie.findMany({
     take: 1,
     skip: randomRowNumber,
   });
-  if (!randomJoke) {
+  if (!randomMovie) {
     throw new Response("No random joke found", {
       status: 404,
     });
   }
-  const data: LoaderData = { randomJoke };
+  const data: LoaderData = { randomMovie };
   return json(data);
 };
 
@@ -32,10 +32,9 @@ export default function JokesIndexRoute() {
 
   return (
     <div>
-      <p>Here's a random joke:</p>
-      <p>{data.randomJoke.content}</p>
-      <Link prefetch="intent" to={data.randomJoke.id}>
-        "{data.randomJoke.name}" Permalink
+      <p>{data.randomMovie.title}</p>
+      <Link prefetch="intent" to={data.randomMovie.id}>
+        "{data.randomMovie.title}" Permalink
       </Link>
     </div>
   );

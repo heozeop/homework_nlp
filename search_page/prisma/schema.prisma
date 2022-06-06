@@ -16,15 +16,47 @@ model User {
   updatedAt    DateTime @updatedAt
   username     String   @unique
   passwordHash String
-  jokes        Joke[]
 }
 
-model Joke {
-  id         String   @id @default(uuid())
-  jokesterId String
-  jokester   User     @relation(fields: [jokesterId], references: [id], onDelete: Cascade)
-  createdAt  DateTime @default(now())
-  updatedAt  DateTime @updatedAt
-  name       String
-  content    String
+model Genre {
+  id     String          @id @default(uuid())
+  name   String          @unique
+  movies GenresOnMovie[]
+}
+
+model Author {
+  id             String           @id @default(uuid())
+  name           String           @unique
+  createdAt      DateTime         @default(now())
+  updatedAt      DateTime         @updatedAt
+  AuthorsOnMovie AuthorsOnMovie[]
+}
+
+model Movie {
+  id             String           @id @default(uuid())
+  createdAt      DateTime         @default(now())
+  updatedAt      DateTime         @updatedAt
+  title          String           
+  poster         String
+  genres         GenresOnMovie[]
+  AuthorsOnMovie AuthorsOnMovie[]
+}
+
+model GenresOnMovie {
+  genre      Genre    @relation(fields: [genreId], references: [id], onDelete: Cascade)
+  genreId    String
+  movie      Movie    @relation(fields: [movieId], references: [id], onDelete: Cascade)
+  movieId    String
+  assignedAt DateTime @default(now())
+
+  @@id([genreId, movieId])
+}
+
+model AuthorsOnMovie {
+  author    Author   @relation(fields: [authorId], references: [id], onDelete: Cascade)
+  authorId  String
+  movie     Movie    @relation(fields: [movieId], references: [id], onDelete: Cascade)
+  movieId   String
+
+  @@id([authorId, movieId])
 }
