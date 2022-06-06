@@ -1,56 +1,97 @@
 import { PrismaClient } from "@prisma/client";
+import fs from 'fs';
+import path from 'path';
+
 const db = new PrismaClient();
 
+const genres = ['Action', 'Adventure', 'Animation', 'Comedy', 'Crime', 'Drama', 'Family', 'Fantasy', 'Film-Noir', 'Horror', 'Musical', 'Mystery', 'Romance', 'Sci-Fi', 'Short', 'Thriller', 'War', 'Western']
+const imgSrouce = "https://www.imsdb.com"
+
 async function seed() {
-  const kody = await db.user.create({
-    data: {
-      username: "kody",
-      // this is a hashed version of "twixrox"
-      passwordHash:
-        "$2b$10$K7L1OJ45/4Y2nIvhRVpCe.FSmhDdWoXehVzJptJ/op0lSsvqNu/1u",
-    },
-  });
-  await Promise.all(
-    getJokes().map((joke) => {
-      const data = { jokesterId: kody.id, ...joke };
-      return db.joke.create({ data });
-    })
-  );
+  const genreList = await Promise.all(
+    genres.map(genre => db.genre.create({ data: { name: genre }}))
+  )
+
+  const movieInfo = getMovieData()
+  // author
+  const uniqAuthors = [...new Set(movieInfo.flatMap(
+      movieInfo => movieInfo['authors']
+    ))]
+
+  const authors = await Promise.all(uniqAuthors.map(author => db.author.create({
+    data: { name: author }
+  })));
+  // Movies
+  const movies = await Promise.all(
+    movieInfo.map(movieInfo => db.movie.create({
+      data: {
+        title: movieInfo['title'],
+        poster: imgSrouce + movieInfo['imgSrc'] || '',
+    }}))
+  )
+
+  // prepare to make relations
+
+  const authorMap = new Map<string, string>();
+  authors.forEach(data => {
+    authorMap.set(data.name, data.id)
+  })
+
+  const genreMap = new Map<string, string>()
+  genreList.forEach(data => {
+    genreMap.set(data.name, data.id);
+  })
+
+  const movieMap = new Map<string, string>();
+  movies.forEach(data => {
+    movieMap.set(data.title, data.id)
+  })
+
+  // Author to Movie
+  await Promise.all(movieInfo.flatMap(movie => {
+      const movieId = movieMap.get(movie.title)
+      if (movieId) {
+        return movie.authors.map(author => {
+          const authorId = authorMap.get(author)
+          if (authorId && movieId) {
+              return db.authorsOnMovie.create({
+                data: {
+                  authorId:authorId,
+                  movieId: movieId
+                }
+              })
+            }
+        })
+      }
+  }))
+
+  // genres to movies
+  await Promise.all(movieInfo.flatMap(movie => {
+    const movieId = movieMap.get(movie.title)
+    if (movieId) {
+      return movie.genres.map(genre => {
+        const genreId = genreMap.get(genre)
+        if (genreId && movieId) {
+          return db.genresOnMovie.create({
+            data: {
+              genreId: genreId,
+              movieId: movieId,
+          }})
+        }
+      })
+    }
+  }))
+
 }
 
 seed();
 
-function getJokes() {
-  // shout-out to https://icanhazdadjoke.com/
-
-  return [
-    {
-      name: "Road worker",
-      content: `I never wanted to believe that my Dad was stealing from his job as a road worker. But when I got home, all the signs were there.`,
-    },
-    {
-      name: "Frisbee",
-      content: `I was wondering why the frisbee was getting bigger, then it hit me.`,
-    },
-    {
-      name: "Trees",
-      content: `Why do trees seem suspicious on sunny days? Dunno, they're just a bit shady.`,
-    },
-    {
-      name: "Skeletons",
-      content: `Why don't skeletons ride roller coasters? They don't have the stomach for it.`,
-    },
-    {
-      name: "Hippos",
-      content: `Why don't you find hippopotamuses hiding in trees? They're really good at it.`,
-    },
-    {
-      name: "Dinner",
-      content: `What did one plate say to the other plate? Dinner is on me!`,
-    },
-    {
-      name: "Elevator",
-      content: `My first time using an elevator was an uplifting experience. The second time let me down.`,
-    },
-  ];
+function getMovieData(): Array<{ 
+  imgSrc: string | null;
+  title: string;
+  genres: Array<string>;
+  authors: Array<string>;
+}> {
+  const file = fs.readFileSync(path.resolve(__dirname,'../data/movie_default.json'), 'utf8')
+  return JSON.parse(file);
 }

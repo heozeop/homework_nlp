@@ -26,7 +26,7 @@ model Genre {
 
 model Author {
   id             String           @id @default(uuid())
-  name           String
+  name           String           @unique
   createdAt      DateTime         @default(now())
   updatedAt      DateTime         @updatedAt
   AuthorsOnMovie AuthorsOnMovie[]
@@ -36,7 +36,7 @@ model Movie {
   id             String           @id @default(uuid())
   createdAt      DateTime         @default(now())
   updatedAt      DateTime         @updatedAt
-  title          String
+  title          String           
   poster         String
   genres         GenresOnMovie[]
   AuthorsOnMovie AuthorsOnMovie[]
@@ -57,7 +57,6 @@ model AuthorsOnMovie {
   authorId  String
   movie     Movie    @relation(fields: [movieId], references: [id], onDelete: Cascade)
   movieId   String
-  updatedAt DateTime
 
   @@id([authorId, movieId])
 }
