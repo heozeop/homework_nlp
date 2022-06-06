@@ -12,10 +12,10 @@ async function seed() {
     genres.map(genre => db.genre.create({ data: { name: genre }}))
   )
 
-  const movieInfo = getMovieData()
+  const movieInfo = getMovieData().map(movie => ({...movie, title: movie.title.replace(', The', '')}))
   // author
   const uniqAuthors = [...new Set(movieInfo.flatMap(
-      movieInfo => movieInfo['authors']
+      movie => movie.authors
     ))]
 
   const authors = await Promise.all(uniqAuthors.map(author => db.author.create({

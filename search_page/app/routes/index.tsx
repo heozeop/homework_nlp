@@ -11,9 +11,9 @@ export const links: LinksFunction = () => {
 };
 
 export const meta: MetaFunction = () => ({
-  title: "Movie I want",
+  title: "Movie Scripts I want",
   description:
-    "Movie finder! Find movie that you want to feel",
+    "Movie Script finder! Find movie that you want to feel",
 });
 
 export default function Index() {
@@ -21,15 +21,12 @@ export default function Index() {
     <div className="container">
       <div className="content">
         <h1>
-          I want to find <span>Movies!</span>
+          I want to find <span>Movie Scripts!</span>
         </h1>
-        <h2>
-          Which like ...
-        </h2>
         <nav>
           <ul>
             <li>
-              <Link to="jokes">Read Jokes</Link>
+              <Link to="movies">find movie scripts</Link>
             </li>
           </ul>
         </nav>

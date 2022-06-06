@@ -1,4 +1,3 @@
-import type { User } from "@prisma/client";
 import type {
   LinksFunction,
   LoaderFunction,
@@ -21,41 +20,39 @@ export const links: LinksFunction = () => {
 
 type LoaderData = {
   user: Awaited<ReturnType<typeof getUser>>;
-  jokeListItems: Array<{ id: string; name: string }>;
+  genreList: Array<{ id: string, name: string }>;
 };
 
 export const loader: LoaderFunction = async ({
   request,
 }) => {
-  const jokeListItems = await db.joke.findMany({
-    take: 5,
-    orderBy: { createdAt: "desc" },
-    select: { id: true, name: true },
+  const genreListItems = await db.genre.findMany({
+    select: {id: true, name: true}
   });
+
   const user = await getUser(request);
 
   const data: LoaderData = {
-    jokeListItems,
+    genreList: genreListItems,
     user,
   };
   return json(data);
 };
 
-export default function JokesRoute() {
+export default function MoviesRoute() {
   const data = useLoaderData<LoaderData>();
 
   return (
-    <div className="jokes-layout">
-      <header className="jokes-header">
+    <div className="movies-layout">
+      <header className="movies-header">
         <div className="container">
           <h1 className="home-link">
             <Link
               to="/"
-              title="Remix Jokes"
-              aria-label="Remix Jokes"
+              title="Movies"
+              aria-label="Movies"
             >
-              <span className="logo">🤪</span>
-              <span className="logo-medium">J🤪KES</span>
+              <span className="logo-medium">M🤪VIES</span>
             </Link>
           </h1>
           {data.user ? (
@@ -75,18 +72,18 @@ export default function JokesRoute() {
       <main className="jokes-main">
         <div className="container">
           <div className="jokes-list">
-            <Link to=".">Get a random joke</Link>
-            <p>Here are a few more jokes to check out:</p>
+            <Link to=".">Get a random Movie</Link>
+            <p>Genres</p>
             <ul>
-              {data.jokeListItems.map((joke) => (
-                <li key={joke.id}>
-                  <Link to={joke.id}>{joke.name}</Link>
+              {data.genreList.map((movie) => (
+                <li key={movie.id}>
+                  <Link to={movie.id}>{movie.name}</Link>
                 </li>
               ))}
             </ul>
-            <Link to="new" className="button">
+            {/* <Link to="new" className="button">
               Add your own
-            </Link>
+            </Link> */}
           </div>
           <div className="jokes-outlet">
             <Outlet />
