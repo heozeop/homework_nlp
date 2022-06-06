@@ -32,23 +32,23 @@ export const links: LinksFunction = () => {
 };
 
 export const meta: MetaFunction = () => {
-  const description = `Learn Remix and laugh at the same time!`;
+  const description = `Type the movie that I want to see now`;
   return {
     charset: "utf-8",
     description,
-    keywords: "Remix,jokes",
+    keywords: "Movie, I want",
     "twitter:image": "https://remix-jokes.lol/social.png",
     "twitter:card": "summary_large_image",
-    "twitter:creator": "@remix_run",
-    "twitter:site": "@remix_run",
-    "twitter:title": "Remix Jokes",
+    "twitter:creator": "@team_made",
+    "twitter:site": "@team_made",
+    "twitter:title": "Movie I want",
     "twitter:description": description,
   };
 };
 
 function Document({
   children,
-  title = `Remix: So great, it's funny!`,
+  title = `Movie that I want to see`,
 }: {
   children: React.ReactNode;
   title?: string;
