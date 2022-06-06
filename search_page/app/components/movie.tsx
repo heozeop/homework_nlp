@@ -8,6 +8,7 @@ export function MovieDisplay({
   return (
     <div>
       <p>{movie.title}</p>
+      <img src={movie.poster} alt={movie.title}></img>
     </div>
   );
 }
