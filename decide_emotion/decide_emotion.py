@@ -35,12 +35,16 @@ for pre_word in stemmer_words:
         
 word_df = word_df.dropna()
 
+
+emo_genre = {'anger' : 'Horror', 'boredom' : 'Adventure','enthusiam' : 'Action', 'fun' : 'Comedy','happiness':'Family',
+'hate':'Crime', 'love':'Romance', 'relief':'Musical', 'sadness':'Drama', 'surpirse':'Thriller', 'worry' : 'Mystery'}
+
 if len(word_df) == 0 :
     print("input sentence has no meaningful word Or can't find emotion")
 else :
     word_df = word_df.astype({'tf_idf': np.float })
     target_index = word_df['tf_idf'].argmax()
     print(word_df)
-    print(word_df.loc[target_index,'emotion'])
-
-
+    emotion = word_df.loc[target_index,'emotion']
+    emotion = str(emotion)
+    print(emo_genre[emotion]) # 출력값 (장르로 나옴)
