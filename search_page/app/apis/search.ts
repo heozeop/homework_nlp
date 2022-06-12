@@ -1,3 +1,6 @@
+export type TSearchResult = 
+  { emotion: string; movies: string[]; genre: string; }
+
 export async function searchApi({ text }: {text?: string}) {
   let apiUrl = "http://api.example.com/some-data.json";
   if (process.env.NODE_ENV !== 'production') {
@@ -10,7 +13,7 @@ export async function searchApi({ text }: {text?: string}) {
 
   let res = await fetch(apiUrl);
 
-  let data: {emotion: string, movies: string[]} = await res.json();
+  let data: TSearchResult = await res.json();
 
   return data;
 }

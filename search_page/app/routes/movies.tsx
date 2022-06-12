@@ -1,5 +1,4 @@
 import type {
-  ActionFunction,
   LinksFunction,
   LoaderFunction,
 } from "@remix-run/node";
@@ -10,7 +9,6 @@ import {
   Outlet,
   useLoaderData,
   useSearchParams,
-  useTransition,
 } from "@remix-run/react";
 
 import { db } from "~/utils/db.server";

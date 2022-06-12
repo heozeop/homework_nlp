@@ -3,7 +3,7 @@ import { json } from "@remix-run/node";
 import {
   useLoaderData,
   useCatch,
-  Link,
+  useTransition,
 } from "@remix-run/react";
 import type { Movie } from "@prisma/client";
 
@@ -16,19 +16,12 @@ type LoaderData = { randomMovie: (Movie & {
 })[]};
 
 export const loader: LoaderFunction = async ({ request }) => {
-
   const url = new URL(request.url);
-  const text = url.searchParams.get("text") ?? '';
-  
-  const searchResult = await searchApi({ text });
-
-  const randomMovie = await db.movie.findMany({
-    take: 10,
-    where: {
-      OR: searchResult.movies.map(title => ({
-        title: title.replaceAll('-',' '),
-      }))
-    },
+  const text = url.searchParams.get("text");
+  const count = parseInt(url.searchParams.get('count') ?? '10', 10);
+  const randomRowNumber = Math.floor(Math.random() * count); 
+  const baseOptions = { 
+    take: count,
     include: { 
       genres: { 
         include: { 
@@ -40,7 +33,27 @@ export const loader: LoaderFunction = async ({ request }) => {
         }
       },
     }
-  });
+  }
+
+  let randomMovie = []
+  if (!text || text.length < 1) {
+    randomMovie = await db.movie.findMany({
+      skip: randomRowNumber,
+      ...baseOptions
+    });
+  } else {
+    const searchResult = await searchApi({ text });
+    randomMovie = await db.movie.findMany({
+      where: {
+        OR: searchResult.movies.map(title => ({
+          title: title.replaceAll('-',' '),
+        }))
+      },
+      ...baseOptions
+    });
+  }
+
+
   if (!randomMovie || randomMovie.length === 0) {
     throw new Response("No movie to show", {
       status: 404,
@@ -60,9 +73,11 @@ export const loader: LoaderFunction = async ({ request }) => {
 
 export default function MoviesIndexRoute() {
   const data = useLoaderData<LoaderData>();
+  const trainsition = useTransition()
 
   return (
     <div className="relative overflow-scroll h-full">
+      {trainsition.state === 'submitting' ? 'loading 중': '로딩 완료'}
       <div className="h-full overflow-auto grid gap-4 grid-cols-5">
         {data.randomMovie.map(movie => (
           <a key={movie.id} href={`https://imsdb.com/scripts/${movie.title.replaceAll(' ','-')}.html`} target="_blank" rel="noreferrer">
