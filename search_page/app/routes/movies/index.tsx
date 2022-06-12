@@ -9,13 +9,7 @@ import type { Movie } from "@prisma/client";
 
 import { db } from "~/utils/db.server";
 
-import stylesUrl from "~/styles/movies-index.css";
 import { MovieDisplay } from "~/components/movie";
-
-export const links: LinksFunction = () => {
-  return [{ rel: "stylesheet", href: stylesUrl }];
-};
-
 type LoaderData = { randomMovie: Movie[]};
 
 export const loader: LoaderFunction = async () => {
@@ -34,7 +28,7 @@ export default function MoviesIndexRoute() {
 
   return (
     <div className="relative overflow-scroll h-full">
-      <div className="movies-posters">
+      <div className="h-full overflow-auto grid gap-4 grid-cols-6">
         {data.randomMovie.map(movie => (
           <MovieDisplay movie={movie} />
         ))}

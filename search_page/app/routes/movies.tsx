@@ -70,7 +70,7 @@ export default function MoviesRoute() {
         </div>
         <div className="movies-search">
           <div className="container">
-            <Form action="/movies" method="post">
+            <Form action="/movies" method="get">
               <textarea
                 placeholder="Search the content you want to see or emotions you want to feel"
               />

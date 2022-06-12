@@ -7,7 +7,9 @@ export function MovieDisplay({
 }) {
   return (
     <div className="w-full">
-      <img src={movie.poster} alt={movie.title}></img>
+      <div className="aspect-[100/148] w-full">
+        <img className="object-fill w-full h-full" src={movie.poster} alt={movie.title}></img>
+      </div>
       <p className="text-ellipsis">{movie.title}</p>
     </div>
   );
