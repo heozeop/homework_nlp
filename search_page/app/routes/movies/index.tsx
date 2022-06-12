@@ -1,9 +1,8 @@
-import type { LinksFunction, LoaderFunction } from "@remix-run/node";
+import type { LoaderFunction } from "@remix-run/node";
 import { json } from "@remix-run/node";
 import {
   useLoaderData,
   useCatch,
-  Form,
   Link,
 } from "@remix-run/react";
 import type { Movie } from "@prisma/client";
@@ -11,12 +10,25 @@ import type { Movie } from "@prisma/client";
 import { db } from "~/utils/db.server";
 
 import { MoviePosterItem } from "~/components/movie";
+import { searchApi } from "~/apis/search";
 type LoaderData = { randomMovie: (Movie & {
     genres: string[];
 })[]};
 
-export const loader: LoaderFunction = async () => {
+export const loader: LoaderFunction = async ({ request }) => {
+
+  const url = new URL(request.url);
+  const text = url.searchParams.get("text") ?? '';
+  
+  const searchResult = await searchApi({ text });
+
   const randomMovie = await db.movie.findMany({
+    take: 10,
+    where: {
+      OR: searchResult.movies.map(title => ({
+        title: title.replaceAll('-',' '),
+      }))
+    },
     include: { 
       genres: { 
         include: { 
@@ -53,9 +65,9 @@ export default function MoviesIndexRoute() {
     <div className="relative overflow-scroll h-full">
       <div className="h-full overflow-auto grid gap-4 grid-cols-5">
         {data.randomMovie.map(movie => (
-          <Link key={movie.id} to={movie.title}>
+          <a key={movie.id} href={`https://imsdb.com/scripts/${movie.title.replaceAll(' ','-')}.html`} target="_blank" rel="noreferrer">
             <MoviePosterItem movie={movie} />
-          </Link>
+          </a>
         ))}
       </div>
     </div>

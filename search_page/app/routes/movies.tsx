@@ -1,4 +1,5 @@
 import type {
+  ActionFunction,
   LinksFunction,
   LoaderFunction,
 } from "@remix-run/node";
@@ -8,11 +9,14 @@ import {
   Link,
   Outlet,
   useLoaderData,
+  useSearchParams,
+  useTransition,
 } from "@remix-run/react";
 
 import { db } from "~/utils/db.server";
 import { getUser } from "~/utils/session.server";
 import stylesUrl from "~/styles/movies.css";
+import { useEffect, useState } from "react";
 
 export const links: LinksFunction = () => {
   return [{ rel: "stylesheet", href: stylesUrl }];
@@ -41,6 +45,16 @@ export const loader: LoaderFunction = async ({
 
 export default function MoviesRoute() {
   const data = useLoaderData<LoaderData>();
+  const [searchParams] = useSearchParams()
+  const text = searchParams.get("text");
+
+  const [textString, setTextString] = useState(text ?? '')
+
+  useEffect(() => {
+    if (text && !textString) {
+      setTextString(text)
+    }
+  }, [text, textString])
 
   return (
     <div className="movies-layout">
@@ -70,9 +84,14 @@ export default function MoviesRoute() {
         </div>
         <div className="movies-search">
           <div className="container">
-            <Form action="/movies" method="get">
+            <Form method="get">
               <input
+                value={textString}
+                onChange={(e) => {
+                  setTextString(e.target.value)
+                }}
                 className="h-full"
+                name="text"
                 type="search"
                 placeholder="Search the content you want to see or emotions you want to feel"
               />
