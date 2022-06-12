@@ -11,6 +11,9 @@ import { db } from "~/utils/db.server";
 
 import { MoviePosterItem } from "~/components/movie";
 import { searchApi } from "~/apis/search";
+
+import ClimbingBoxLoader from 'react-spinners/ClimbingBoxLoader';
+
 type LoaderData = { randomMovie: (Movie & {
     genres: string[];
 })[]};
@@ -75,16 +78,22 @@ export default function MoviesIndexRoute() {
   const data = useLoaderData<LoaderData>();
   const trainsition = useTransition()
 
+
   return (
     <div className="relative overflow-scroll h-full">
-      {trainsition.state === 'submitting' ? 'loading 중': '로딩 완료'}
-      <div className="h-full overflow-auto grid gap-4 grid-cols-5">
-        {data.randomMovie.map(movie => (
-          <a key={movie.id} href={`https://imsdb.com/scripts/${movie.title.replaceAll(' ','-')}.html`} target="_blank" rel="noreferrer">
-            <MoviePosterItem movie={movie} />
-          </a>
-        ))}
-      </div>
+      {trainsition.state === 'submitting' ?
+          <div className="flex center w-full h-full">
+            <ClimbingBoxLoader color={"#ededed"} />
+            <p>로딩 중~~</p>
+          </div>
+        : <div className="h-full overflow-auto grid gap-4 grid-cols-5">
+            {data.randomMovie.map(movie => (
+              <a key={movie.id} href={`https://imsdb.com/scripts/${movie.title.replaceAll(' ','-')}.html`} target="_blank" rel="noreferrer">
+                <MoviePosterItem movie={movie} />
+              </a>
+            ))}
+          </div>
+        }
     </div>
   );
 }

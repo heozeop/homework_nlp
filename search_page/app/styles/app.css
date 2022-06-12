@@ -608,6 +608,10 @@ video {
   position: relative;
 }
 
+.flex {
+  display: flex;
+}
+
 .grid {
   display: grid;
 }
