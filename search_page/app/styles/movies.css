@@ -1,92 +1,115 @@
-.jokes-layout {
+.movies-layout {
+  position: relative;
   display: flex;
   flex-direction: column;
   min-height: inherit;
+  height: 100%;
 }
 
-.jokes-header {
+.movies-header {
+  position: sticky;
+  top:0;
+  z-index: 1;
+  background-color: var(--color-background);
   padding-top: 1rem;
   padding-bottom: 1rem;
   border-bottom: 1px solid var(--color-border);
 }
 
-.jokes-header .container {
+.movies-header .container {
   display: flex;
   justify-content: space-between;
   align-items: center;
 }
 
-.jokes-header .home-link {
+.movies-header .home-link {
   font-family: var(--font-display);
   font-size: 3rem;
 }
 
-.jokes-header .home-link a {
+.movies-header .home-link a {
   color: var(--color-foreground);
 }
 
-.jokes-header .home-link a:hover {
+.movies-header .home-link a:hover {
   text-decoration: none;
 }
 
-.jokes-header .logo-medium {
+.movies-header .logo-medium {
   display: none;
 }
 
-.jokes-header a:hover {
+.movies-header a:hover {
   text-decoration-style: wavy;
   text-decoration-thickness: 1px;
 }
 
-.jokes-header .user-info {
+.movies-header .user-info {
   display: flex;
   gap: 1rem;
   align-items: center;
   white-space: nowrap;
 }
 
-.jokes-main {
+.movies-main {
   padding-top: 2rem;
   padding-bottom: 2rem;
   flex: 1 1 100%;
+  height: 100%;
 }
 
-.jokes-main .container {
-  display: flex;
-  gap: 1rem;
+.movies-main .container {
+  flex-direction: column;
+  height: 100%;
 }
 
-.jokes-list {
+.movies-list {
   max-width: 12rem;
+  position: sticky;
+  top: 0;
 }
 
-.jokes-outlet {
+.movies-outlet {
   flex: 1;
 }
 
-.jokes-footer {
+
+.movies-footer {
   padding-top: 2rem;
   padding-bottom: 1rem;
   border-top: 1px solid var(--color-border);
 }
 
 @media print, (min-width: 640px) {
-  .jokes-header .logo {
+  .movies-header .logo {
     display: none;
   }
 
-  .jokes-header .logo-medium {
+  .movies-header .logo-medium {
     display: block;
   }
 
-  .jokes-main {
+  .movies-main {
     padding-top: 3rem;
     padding-bottom: 3rem;
   }
 }
 
+textarea {
+  resize: none;
+}
+
+.movies-search {
+  padding-top: 1rem;
+  
+}
+
+.movies-search form {
+  display:flex;
+  flex-direction: row;
+}
 @media (max-width: 639px) {
-  .jokes-main .container {
+  .movies-main .container {
     flex-direction: column;
   }
 }

@@ -6,9 +6,10 @@ export function MovieDisplay({
   movie: Movie
 }) {
   return (
-    <div>
-      <p>{movie.title}</p>
+    <div className="w-full">
       <img src={movie.poster} alt={movie.title}></img>
+      <p className="text-ellipsis">{movie.title}</p>
     </div>
   );
 }
+

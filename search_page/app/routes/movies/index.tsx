@@ -1,25 +1,27 @@
-import type { LoaderFunction } from "@remix-run/node";
+import type { LinksFunction, LoaderFunction } from "@remix-run/node";
 import { json } from "@remix-run/node";
 import {
   useLoaderData,
-  Link,
   useCatch,
+  Form,
 } from "@remix-run/react";
 import type { Movie } from "@prisma/client";
 
 import { db } from "~/utils/db.server";
 
-type LoaderData = { randomMovie: Movie};
+import stylesUrl from "~/styles/movies-index.css";
+import { MovieDisplay } from "~/components/movie";
+
+export const links: LinksFunction = () => {
+  return [{ rel: "stylesheet", href: stylesUrl }];
+};
+
+type LoaderData = { randomMovie: Movie[]};
 
 export const loader: LoaderFunction = async () => {
-  const count = await db.movie.count();
-  const randomRowNumber = Math.floor(Math.random() * count);
-  const [randomMovie] = await db.movie.findMany({
-    take: 1,
-    skip: randomRowNumber,
-  });
-  if (!randomMovie) {
-    throw new Response("No random joke found", {
+  const randomMovie = await db.movie.findMany();
+  if (!randomMovie || randomMovie.length === 0) {
+    throw new Response("No movie to show", {
       status: 404,
     });
   }
@@ -27,15 +29,16 @@ export const loader: LoaderFunction = async () => {
   return json(data);
 };
 
-export default function JokesIndexRoute() {
+export default function MoviesIndexRoute() {
   const data = useLoaderData<LoaderData>();
 
   return (
-    <div>
-      <p>{data.randomMovie.title}</p>
-      <Link prefetch="intent" to={data.randomMovie.id}>
-        "{data.randomMovie.title}" Permalink
-      </Link>
+    <div className="relative overflow-scroll h-full">
+      <div className="movies-posters">
+        {data.randomMovie.map(movie => (
+          <MovieDisplay movie={movie} />
+        ))}
+      </div>
     </div>
   );
 }

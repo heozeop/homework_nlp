@@ -1,0 +1,8 @@
+.movies-posters {
+  margin-top: 1rem;
+  height: 100%;
+  overflow: auto;
+  display: grid;
+  gap: 1rem;
+  grid-template-columns: repeat(4, auto);
+}

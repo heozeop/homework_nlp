@@ -12,7 +12,7 @@ import {
 
 import { db } from "~/utils/db.server";
 import { getUser } from "~/utils/session.server";
-import stylesUrl from "~/styles/jokes.css";
+import stylesUrl from "~/styles/movies.css";
 
 export const links: LinksFunction = () => {
   return [{ rel: "stylesheet", href: stylesUrl }];
@@ -52,7 +52,7 @@ export default function MoviesRoute() {
               title="Movies"
               aria-label="Movies"
             >
-              <span className="logo-medium">M🤪VIES</span>
+              <span className="logo-medium">IMSDB searcher</span>
             </Link>
           </h1>
           {data.user ? (
@@ -68,24 +68,22 @@ export default function MoviesRoute() {
             <Link to="/login">Login</Link>
           )}
         </div>
-      </header>
-      <main className="jokes-main">
-        <div className="container">
-          <div className="jokes-list">
-            <Link to=".">Get a random Movie</Link>
-            <p>Genres</p>
-            <ul>
-              {data.genreList.map((movie) => (
-                <li key={movie.id}>
-                  <Link to={movie.id}>{movie.name}</Link>
-                </li>
-              ))}
-            </ul>
-            {/* <Link to="new" className="button">
-              Add your own
-            </Link> */}
+        <div className="movies-search">
+          <div className="container">
+            <Form action="/movies" method="post">
+              <textarea
+                placeholder="Search the content you want to see or emotions you want to feel"
+              />
+              <button type="submit" className="button">
+                Search
+              </button>
+            </Form>
           </div>
-          <div className="jokes-outlet">
+        </div>
+      </header>
+      <main className="movies-main">
+          <div className="container">
+          <div className="movies-outlet">
             <Outlet />
           </div>
         </div>
