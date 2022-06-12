@@ -1,6 +1,6 @@
 import type { Movie } from "@prisma/client";
 
-export function MovieDisplay({
+export function MoviePosterItem({
   movie,
 }: {
   movie: Movie
@@ -10,7 +10,7 @@ export function MovieDisplay({
       <div className="aspect-[100/148] w-full">
         <img className="object-fill w-full h-full" src={movie.poster} alt={movie.title}></img>
       </div>
-      <p className="text-ellipsis">{movie.title}</p>
+      <p className="w-full text-ellipsis whitespace-nowrap overflow-hidden">{movie.title}</p>
     </div>
   );
 }

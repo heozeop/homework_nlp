@@ -9,7 +9,7 @@ import type { Movie } from "@prisma/client";
 
 import { db } from "~/utils/db.server";
 
-import { MovieDisplay } from "~/components/movie";
+import { MoviePosterItem } from "~/components/movie";
 type LoaderData = { randomMovie: Movie[]};
 
 export const loader: LoaderFunction = async () => {
@@ -30,7 +30,7 @@ export default function MoviesIndexRoute() {
     <div className="relative overflow-scroll h-full">
       <div className="h-full overflow-auto grid gap-4 grid-cols-6">
         {data.randomMovie.map(movie => (
-          <MovieDisplay movie={movie} />
+          <MoviePosterItem movie={movie} />
         ))}
       </div>
     </div>

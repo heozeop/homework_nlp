@@ -11,7 +11,7 @@ import {
 import type { Movie } from "@prisma/client";
 
 import { db } from "~/utils/db.server";
-import { MovieDisplay } from "~/components/movie";
+import { MoviePosterItem } from "~/components/movie";
 export const meta: MetaFunction = ({
   data,
 }: {
@@ -53,7 +53,7 @@ export default function JokeRoute() {
   const data = useLoaderData<LoaderData>();
 
   return (
-    <MovieDisplay movie={data.movie} />
+    <MoviePosterItem movie={data.movie} />
   );
 }
 
