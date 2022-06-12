@@ -38,6 +38,7 @@ model Movie {
   updatedAt      DateTime         @updatedAt
   title          String           
   poster         String
+  script         MovieScript[]
   genres         GenresOnMovie[]
   AuthorsOnMovie AuthorsOnMovie[]
 }
@@ -59,4 +60,11 @@ model AuthorsOnMovie {
   movieId   String
 
   @@id([authorId, movieId])
+}
+
+model MovieScript {
+  id             String           @id @default(uuid())
+  movie          Movie            @relation(fields: [movieId], references: [id], onDelete: Cascade)
+  movieId        String
+  contents       String
 }

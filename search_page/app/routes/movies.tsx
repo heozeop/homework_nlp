@@ -71,7 +71,9 @@ export default function MoviesRoute() {
         <div className="movies-search">
           <div className="container">
             <Form action="/movies" method="get">
-              <textarea
+              <input
+                className="h-full"
+                type="search"
                 placeholder="Search the content you want to see or emotions you want to feel"
               />
               <button type="submit" className="button">

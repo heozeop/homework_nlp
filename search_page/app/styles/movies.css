@@ -94,19 +94,31 @@
   }
 }
 
-textarea {
-  resize: none;
+input::placeholder {
+  color: var(--color-foreground);
+  font-style: italic;
+}
+input {
+  --shadow-color: hsl(var(--color-border));
+  --shadow-size: 3px;
+  box-shadow: 0 var(--shadow-size) 0 0 var(--shadow-color);
 }
 
 .movies-search {
   padding-top: 1rem;
-  
 }
 
 .movies-search form {
   display:flex;
   flex-direction: row;
+  justify-content: center;
+  align-items: center;
 }
+
+.movies-search button:hover {
+  color: var(--color-foreground);
+}
+
 @media (max-width: 639px) {
   .movies-main .container {
     flex-direction: column;

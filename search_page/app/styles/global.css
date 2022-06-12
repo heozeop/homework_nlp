@@ -6,12 +6,12 @@
 }
 
 :root {
-  --hs-links: 48 100%;
-  --color-foreground: hsl(0, 0%, 100%);
-  --color-background: hsl(205, 72%, 47%);
-  --color-links: hsl(var(--hs-links) 50%);
+  --hs-links: 183 100%;
+  --color-foreground: hsl(0, 0%, 93%);
+  --color-background: 		hsl(212, 15%, 22%);
+  --color-links: hsl(var(--hs-links) 35%);
   --color-links-hover: hsl(var(--hs-links) 45%);
-  --color-border: hsl(199, 85%, 38%);
+  --color-border: 	hsl(205, 16%, 27%);
   --color-invalid: hsl(356, 100%, 71%);
   --gradient-background: radial-gradient(
     circle,
