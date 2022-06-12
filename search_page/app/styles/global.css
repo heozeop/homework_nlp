@@ -6,18 +6,18 @@
 }
 
 :root {
-  --hs-links: 183 100%;
+  --hs-links: 48 100%;
   --color-foreground: hsl(0, 0%, 93%);
   --color-background: 		hsl(212, 15%, 22%);
-  --color-links: hsl(var(--hs-links) 35%);
+  --color-links: hsl(var(--hs-links) 50%);
   --color-links-hover: hsl(var(--hs-links) 45%);
   --color-border: 	hsl(205, 16%, 27%);
   --color-invalid: hsl(356, 100%, 71%);
   --gradient-background: radial-gradient(
     circle,
-    rgb(11, 117, 238) 0%,
-    rgb(15, 101, 181) 35%,
-    rgb(13, 51, 85) 100%
+    hsl(205, 16%, 40%) 0%,
+    hsl(205, 16%, 27%) 35%,
+    hsl(212, 15%, 22%) 100%
   );
   --font-body: -apple-system, "Segoe UI", Helvetica Neue, Helvetica,
     Roboto, Arial, sans-serif, system-ui, "Apple Color Emoji",

@@ -4,6 +4,7 @@ import {
   useLoaderData,
   useCatch,
   Form,
+  Link,
 } from "@remix-run/react";
 import type { Movie } from "@prisma/client";
 
@@ -52,7 +53,9 @@ export default function MoviesIndexRoute() {
     <div className="relative overflow-scroll h-full">
       <div className="h-full overflow-auto grid gap-4 grid-cols-5">
         {data.randomMovie.map(movie => (
-          <MoviePosterItem movie={movie} />
+          <Link key={movie.id} to={movie.title}>
+            <MoviePosterItem movie={movie} />
+          </Link>
         ))}
       </div>
     </div>
