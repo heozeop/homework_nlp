@@ -2,6 +2,15 @@ import math, heapq
 from operator import itemgetter
 
 
+def check_keyword_frequency(raw_keywords):
+    keyword_dict = {key: 0 for key in list(set(raw_keywords))}
+
+    for keyword in raw_keywords:
+        keyword_dict[keyword] += 1
+
+    return keyword_dict
+
+
 class VSModel:
     def __init__(self, movie_scripts, preprocessor):
         self.preprocessor = preprocessor
@@ -12,21 +21,13 @@ class VSModel:
     def script_to_key_list(self, movie_script):
         return self.preprocessor.preprocess(movie_script)
 
-    def check_keyword_frequency(self, raw_keywords):
-        keyword_dict = {key: 0 for key in list(set(raw_keywords))}
-
-        for keyword in raw_keywords:
-            keyword_dict[keyword] += 1
-
-        return keyword_dict
-
     def get_inverted_index(self, movie_raw):
         index = {}
         doc_len = len(movie_raw)
 
         for i, movie_script in enumerate(movie_raw):
             key_list = self.script_to_key_list(movie_script)
-            key_dict = self.check_keyword_frequency(key_list)
+            key_dict = check_keyword_frequency(key_list)
 
             key_list = list(set(key_list))  # make unique set
 
@@ -40,7 +41,7 @@ class VSModel:
                 else:
                     index[key] = (key_dict[key], h)
 
-        return index;
+        return index
 
     def parse_to_tf_idf(self, term):
         if (term in self.index) is False:
@@ -56,7 +57,7 @@ class VSModel:
         for term in term_list:
             tf_idf_list = self.parse_to_tf_idf(term)
 
-            if tf_idf_list != None:
+            if tf_idf_list is not None:
                 for tf_idf, di in tf_idf_list:
                     if di in doc:
                         doc[di] += tf_idf
@@ -68,6 +69,6 @@ class VSModel:
 
         term_list = self.script_to_key_list(text)
 
-        docs = self.calc_similarity(self.check_keyword_frequency(term_list))
+        docs = self.calc_similarity(check_keyword_frequency(term_list))
 
         return heapq.nlargest(k, docs.items(), key=itemgetter(1))
