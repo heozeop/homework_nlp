@@ -14,7 +14,7 @@ async function seed() {
 
   const movieInfo = getMovieData().map(movie => ({
     ...movie,
-    title: movie.title.replace(', The', ''),
+    title: movie.title,
     imgSrc: movie.imgSrc?.startsWith('http') ? movie.imgSrc : imgSrouce + movie.imgSrc,
   }))
   // author

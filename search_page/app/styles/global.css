@@ -7,17 +7,17 @@
 
 :root {
   --hs-links: 48 100%;
-  --color-foreground: hsl(0, 0%, 100%);
-  --color-background: hsl(278, 73%, 19%);
+  --color-foreground: hsl(0, 0%, 93%);
+  --color-background: 		hsl(212, 15%, 22%);
   --color-links: hsl(var(--hs-links) 50%);
   --color-links-hover: hsl(var(--hs-links) 45%);
-  --color-border: hsl(277, 85%, 38%);
+  --color-border: 	hsl(205, 16%, 27%);
   --color-invalid: hsl(356, 100%, 71%);
   --gradient-background: radial-gradient(
     circle,
-    rgba(152, 11, 238, 1) 0%,
-    rgba(118, 15, 181, 1) 35%,
-    rgba(58, 13, 85, 1) 100%
+    hsl(205, 16%, 40%) 0%,
+    hsl(205, 16%, 27%) 35%,
+    hsl(212, 15%, 22%) 100%
   );
   --font-body: -apple-system, "Segoe UI", Helvetica Neue, Helvetica,
     Roboto, Arial, sans-serif, system-ui, "Apple Color Emoji",

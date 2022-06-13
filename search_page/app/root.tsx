@@ -14,9 +14,11 @@ import {
 import globalStylesUrl from "./styles/global.css";
 import globalMediumStylesUrl from "./styles/global-medium.css";
 import globalLargeStylesUrl from "./styles/global-large.css";
+import tailwindStyles from "./styles/app.css"
 
 export const links: LinksFunction = () => {
   return [
+    {rel: "stylesheet", href: tailwindStyles},
     { rel: "stylesheet", href: globalStylesUrl },
     {
       rel: "stylesheet",
@@ -36,19 +38,18 @@ export const meta: MetaFunction = () => {
   return {
     charset: "utf-8",
     description,
-    keywords: "Movie, I want",
-    "twitter:image": "https://remix-jokes.lol/social.png",
+    keywords: "Movie scripts",
     "twitter:card": "summary_large_image",
     "twitter:creator": "@team_made",
     "twitter:site": "@team_made",
-    "twitter:title": "Movie I want",
+    "twitter:title": "IMSDB searcher",
     "twitter:description": description,
   };
 };
 
 function Document({
   children,
-  title = `Movie that I want to see`,
+  title = `IMSDB searcher`,
 }: {
   children: React.ReactNode;
   title?: string;

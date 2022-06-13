@@ -21,12 +21,12 @@ export default function Index() {
     <div className="container">
       <div className="content">
         <h1>
-          I want to find <span>Movie Scripts!</span>
+          IMSDB <span>Movie Script searcher</span>
         </h1>
         <nav>
           <ul>
             <li>
-              <Link to="movies">find movie scripts</Link>
+              <Link to="movies">Let's find the movie that you want!</Link>
             </li>
           </ul>
         </nav>
